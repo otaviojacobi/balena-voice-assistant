@@ -1,0 +1,44 @@
+version: "2"
+
+volumes:
+  balena-rules-editor-data:
+  pulse:
+
+networks:
+  default:
+  proxy:
+    external: true
+
+services:
+  rules-editor:
+    build: ./rules-editor
+    container_name: rules-editor
+    volumes:
+      - "balena-rules-editor-data:/var/lib/rules-editor/"
+    ports:
+      - "80:80"
+    networks:
+      - default
+
+  audio:
+    image: bh.cr/balenablocks/audio-amd64 # where <arch> is one of rpi, armv7hf, aarch64 or amd64
+    privileged: true
+    volumes:
+      - "pulse:/run/pulse" # Only required if using PA over UNIX socket
+    environment:
+      - AUDIO_LOG_LEVEL=DEBUG
+
+  rhasspy:
+    build: ./rhasspy
+    container_name: rhasspy
+    ports:
+      - "12101:12101"
+    expose:
+      - "12101"
+    command: --profile en --user-profiles /profiles
+    networks:
+      - default
+    volumes:
+      - "pulse:/run/pulse"
+    environment:
+      - PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
