@@ -1,5 +1,7 @@
-
 {
+    "dialogue": {
+        "system": "rhasspy"
+    },
     "intent": {
         "system": "fsticuffs"
     },
@@ -20,7 +22,7 @@
     },
     "wake": {
         "porcupine": {
-            "keyword_path": "computer_raspberry-pi.ppn"
+            "keyword_path": "jarvis_linux.ppn"
         },
         "system": "porcupine"
     }

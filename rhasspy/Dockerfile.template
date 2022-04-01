@@ -5,3 +5,6 @@ RUN curl -skL https://raw.githubusercontent.com/balenablocks/audio/master/script
 
 COPY ./sentences.ini /profiles/en/sentences.ini
 COPY ./profile.json /profiles/en/profile.json
+COPY ./slots/rhasspy/days /profiles/en/slots/rhasspy/days
+COPY ./slots/rhasspy/months /profiles/en/slots/rhasspy/months
+COPY ./slot_programs/rhasspy/number /profiles/en/slot_programs/rhasspy/number
