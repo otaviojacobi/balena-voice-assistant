@@ -5,17 +5,18 @@ import { useState } from 'react';
 import Header from './Header';
 import RulesEditor from './RulesEditor';
 import TriggerEditor from './TriggerEditor';
-import { defaultRules } from './defaultValues';
+import { defaultIntents, defaultRules } from './defaultValues';
 
 function App() {
-  const [intents, setIntents] = useState(defaultRules());
+  const [sentences, setSentences] = useState(defaultRules());
+  const [intents, setIntents] = useState(defaultIntents());
 
   return (
     <div>
-      <Header intents={intents} />
+      <Header sentences={sentences} intents={intents} />
       <div className='rowC'>
-        <RulesEditor setIntents={setIntents} />
-        <TriggerEditor />
+        <RulesEditor setSentences={setSentences} />
+        <TriggerEditor setIntents={setIntents} />
       </div>
     </div>
   );

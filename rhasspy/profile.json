@@ -2,6 +2,13 @@
     "dialogue": {
         "system": "rhasspy"
     },
+    "handle": {
+        "system": "hass"
+    },
+    "home_assistant": {
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MTUxNWRjNzUyY2I0MDcwOTI5ZDcxOTg5MzhlYTIwOCIsImlhdCI6MTY0ODgzOTk2OSwiZXhwIjoxNjgwMzc1OTY5fQ.3-_b8EUGB9UC6fgWG18zW_G-qa9apxeCJb-3KbO-ZPE",
+        "url": "http://192.168.0.40:8123"
+    },
     "intent": {
         "system": "fsticuffs"
     },

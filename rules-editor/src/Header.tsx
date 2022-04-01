@@ -10,20 +10,66 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Check, Clear } from '@mui/icons-material';
 
 interface HeaderProps {
+  sentences: string;
   intents: string;
 }
 
-export default function Header({ intents }: HeaderProps) {
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MTUxNWRjNzUyY2I0MDcwOTI5ZDcxOTg5MzhlYTIwOCIsImlhdCI6MTY0ODgzOTk2OSwiZXhwIjoxNjgwMzc1OTY5fQ.3-_b8EUGB9UC6fgWG18zW_G-qa9apxeCJb-3KbO-ZPE';
+
+export default function Header({ sentences, intents }: HeaderProps) {
   const [syncStatus, setSyncStatus] = useState('ok');
 
-  const updateSentences = async () => {
+  const updateSentences = async (): Promise<void> => {
+    await axios.post('http://192.168.0.40:12101/api/sentences', {
+      'sentences.ini': sentences,
+    });
+    await axios.post('http://192.168.0.40:12101/api/train');
+    await axios.post('http://192.168.0.40:12101/api/restart');
+  };
+
+  const updateIntents = async (): Promise<void> => {
+    const checkIntents = await axios.get(
+      'http://192.168.0.40:3218/api/file?filename=/hass-config/intentss.yaml',
+    );
+
+    if (checkIntents['data'] === 'File not found') {
+      console.log('inside');
+      const newFileBody = new URLSearchParams({
+        path: '/hass-config',
+        name: 'intents.yaml',
+      });
+
+      await axios.post('http://192.168.0.40:3218/api/newfile', newFileBody, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+    }
+
+    const updateFileBody = new URLSearchParams({
+      filename: '/hass-config/intents.yaml',
+      text: intents,
+    });
+
+    await axios.post('http://192.168.0.40:3218/api/save', updateFileBody, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+
+    const restart = await axios.post(
+      'http://192.168.0.40:8123/api/services/homeassistant/restart',
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+
+    console.log(restart);
+  };
+
+  const sync = async (): Promise<void> => {
     setSyncStatus('loading');
     try {
-      await axios.post('http://192.168.0.40:12101/api/sentences', {
-        'sentences.ini': intents,
-      });
-      await axios.post('http://192.168.0.40:12101/api/train');
-      await axios.post('http://192.168.0.40:12101/api/restart');
+      await updateSentences();
+      await updateIntents();
       setSyncStatus('ok');
     } catch (e) {
       console.error('Failed to sync with error', e);
@@ -44,7 +90,7 @@ export default function Header({ intents }: HeaderProps) {
             Assistant
           </Typography>
           <div style={{ marginLeft: '36%' }}></div>
-          <Button onClick={updateSentences} color='inherit'>
+          <Button onClick={sync} color='inherit'>
             REBUILD
           </Button>
           {syncStatus === 'ok' && <Check color='success' />}

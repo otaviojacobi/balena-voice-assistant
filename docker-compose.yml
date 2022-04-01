@@ -1,6 +1,8 @@
-version: "2"
+version: '2'
 
 volumes:
+  config:
+  mosquitto:
   balena-rules-editor-data:
   pulse:
 
@@ -14,17 +16,17 @@ services:
     build: ./rules-editor
     container_name: rules-editor
     volumes:
-      - "balena-rules-editor-data:/var/lib/rules-editor/"
+      - 'balena-rules-editor-data:/var/lib/rules-editor/'
     ports:
-      - "80:80"
+      - '80:80'
     networks:
       - default
 
   audio:
-    image: bh.cr/balenablocks/audio-amd64 # where <arch> is one of rpi, armv7hf, aarch64 or amd64
+    image: bh.cr/balenablocks/audio-amd64
     privileged: true
     volumes:
-      - "pulse:/run/pulse" # Only required if using PA over UNIX socket
+      - 'pulse:/run/pulse'
     environment:
       - AUDIO_LOG_LEVEL=DEBUG
 
@@ -32,13 +34,40 @@ services:
     build: ./rhasspy
     container_name: rhasspy
     ports:
-      - "12101:12101"
+      - '12101:12101'
     expose:
-      - "12101"
+      - '12101'
     command: --profile en --user-profiles /profiles
     networks:
       - default
     volumes:
-      - "pulse:/run/pulse"
+      - 'pulse:/run/pulse'
     environment:
       - PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
+
+  homeassistant:
+    build: homeassistant
+    ports:
+      - '8123:8123'
+    privileged: true
+    volumes:
+      - 'config:/config'
+    restart: always
+
+  mqtt:
+    build: mqtt
+    ports:
+      - '1883:1883'
+    restart: always
+    volumes:
+      - mosquitto:/mosquitto/data
+
+  hass-configurator:
+    image: 'causticlab/hass-configurator-docker:latest'
+    restart: always
+    ports:
+      - '3218:3218'
+    volumes:
+      - 'config:/hass-config'
+    environment:
+      - HC_BASEPATH=/hass-config

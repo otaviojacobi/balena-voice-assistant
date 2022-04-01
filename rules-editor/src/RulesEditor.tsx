@@ -57,11 +57,15 @@ function setUpIniLanguage(monaco: Monaco) {
   monaco.languages.setLanguageConfiguration('iniLanguage', config);
 }
 
-export default function RulesEditor({ setIntents }: { setIntents: Function }) {
+export default function RulesEditor({
+  setSentences,
+}: {
+  setSentences: Function;
+}) {
   const monaco = useMonaco();
   const [loading, setLoading] = useState(true);
 
-  const updateIntents = useCallback((e) => setIntents(e), [setIntents]);
+  const updateSentences = useCallback((e) => setSentences(e), [setSentences]);
 
   useEffect(() => {
     if (monaco) {
@@ -87,7 +91,7 @@ export default function RulesEditor({ setIntents }: { setIntents: Function }) {
         },
         renderWhitespace: 'all',
       }}
-      onChange={updateIntents}
+      onChange={updateSentences}
     />
   );
 }
