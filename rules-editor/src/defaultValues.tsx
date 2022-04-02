@@ -21,7 +21,7 @@ debug
 
 export function defaultIntents(): string {
   return `# home assistant script example
-  GetTime:
+GetTime:
   speech:
     text: it is {{ as_local(now()).hour }} hours and {{ as_local(now()).minute }} minutes
 

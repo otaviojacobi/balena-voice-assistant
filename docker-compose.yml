@@ -12,13 +12,21 @@ networks:
     external: true
 
 services:
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - '80:80'
+    networks:
+      - default
+
   rules-editor:
     build: ./rules-editor
     container_name: rules-editor
     volumes:
       - 'balena-rules-editor-data:/var/lib/rules-editor/'
     ports:
-      - '80:80'
+      - '3000:3000'
     networks:
       - default
 

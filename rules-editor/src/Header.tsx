@@ -21,16 +21,16 @@ export default function Header({ sentences, intents }: HeaderProps) {
   const [syncStatus, setSyncStatus] = useState('ok');
 
   const updateSentences = async (): Promise<void> => {
-    await axios.post('http://192.168.0.40:12101/api/sentences', {
+    await axios.post('/rhasspy/api/sentences', {
       'sentences.ini': sentences,
     });
-    await axios.post('http://192.168.0.40:12101/api/train');
-    await axios.post('http://192.168.0.40:12101/api/restart');
+    await axios.post('/rhasspy/api/train');
+    await axios.post('/rhasspy/api/restart');
   };
 
   const updateIntents = async (): Promise<void> => {
     const checkIntents = await axios.get(
-      'http://192.168.0.40:3218/api/file?filename=/hass-config/intentss.yaml',
+      '/haconfig/api/file?filename=/hass-config/intents.yaml',
     );
 
     if (checkIntents['data'] === 'File not found') {
@@ -40,7 +40,7 @@ export default function Header({ sentences, intents }: HeaderProps) {
         name: 'intents.yaml',
       });
 
-      await axios.post('http://192.168.0.40:3218/api/newfile', newFileBody, {
+      await axios.post('/haconfig/api/newfile', newFileBody, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
     }
@@ -50,12 +50,12 @@ export default function Header({ sentences, intents }: HeaderProps) {
       text: intents,
     });
 
-    await axios.post('http://192.168.0.40:3218/api/save', updateFileBody, {
+    await axios.post('/haconfig/api/save', updateFileBody, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
     const restart = await axios.post(
-      'http://192.168.0.40:8123/api/services/homeassistant/restart',
+      '/haas/api/services/homeassistant/restart',
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
