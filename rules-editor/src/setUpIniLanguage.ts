@@ -1,12 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
-import { defaultRules } from './defaultValues';
+import { Monaco } from '@monaco-editor/react';
 
-function setUpIniLanguage(monaco: Monaco) {
-  // Register a new language
+export default function setUpIniLanguage(monaco: Monaco) {
   monaco.languages.register({ id: 'iniLanguage' });
 
-  // Register a tokens provider for the language
   monaco.languages.setMonarchTokensProvider('iniLanguage', {
     tokenizer: {
       root: [
@@ -20,7 +16,6 @@ function setUpIniLanguage(monaco: Monaco) {
     },
   });
 
-  // Define a new theme that contains only rules that match this language
   monaco.editor.defineTheme('iniTheme', {
     base: 'vs-dark',
     inherit: true,
@@ -55,43 +50,4 @@ function setUpIniLanguage(monaco: Monaco) {
     ],
   };
   monaco.languages.setLanguageConfiguration('iniLanguage', config);
-}
-
-export default function RulesEditor({
-  setSentences,
-}: {
-  setSentences: Function;
-}) {
-  const monaco = useMonaco();
-  const [loading, setLoading] = useState(true);
-
-  const updateSentences = useCallback((e) => setSentences(e), [setSentences]);
-
-  useEffect(() => {
-    if (monaco) {
-      setUpIniLanguage(monaco);
-    }
-    setLoading(false);
-  }, [monaco]);
-
-  if (loading) {
-    return <h1>Loading</h1>;
-  }
-
-  return (
-    <Editor
-      height='93vh'
-      width='50%'
-      defaultLanguage='iniLanguage'
-      defaultValue={defaultRules()}
-      theme='iniTheme'
-      options={{
-        minimap: {
-          enabled: true,
-        },
-        renderWhitespace: 'all',
-      }}
-      onChange={updateSentences}
-    />
-  );
 }

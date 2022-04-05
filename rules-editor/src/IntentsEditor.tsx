@@ -1,12 +1,15 @@
 import Editor from '@monaco-editor/react';
 import { useCallback } from 'react';
-import { defaultIntents } from './defaultValues';
 
-export default function TriggerEditor({
-  setIntents,
-}: {
+interface IntentsEditorProps {
+  intents: string;
   setIntents: Function;
-}) {
+}
+
+export default function IntentsEditor({
+  intents,
+  setIntents,
+}: IntentsEditorProps) {
   const updateIntents = useCallback((e) => setIntents(e), [setIntents]);
 
   return (
@@ -14,7 +17,7 @@ export default function TriggerEditor({
       height='93vh'
       width='50%'
       defaultLanguage='yaml'
-      defaultValue={defaultIntents()}
+      defaultValue={intents}
       theme='vs-dark'
       options={{
         minimap: {
