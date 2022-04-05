@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Check, Clear } from '@mui/icons-material';
+import VoiceLedDisplay from './VoiceLedDisplay';
 
 interface HeaderProps {
   sentences: string;
@@ -89,7 +90,9 @@ export default function Header({ sentences, intents }: HeaderProps) {
           >
             Assistant
           </Typography>
-          <div style={{ marginLeft: '36%' }}></div>
+          <div style={{ marginLeft: '1%' }}></div>
+          <VoiceLedDisplay />
+          <div style={{ marginLeft: '35%' }}></div>
           <Button onClick={sync} color='inherit'>
             REBUILD
           </Button>

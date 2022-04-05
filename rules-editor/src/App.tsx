@@ -30,7 +30,12 @@ function App() {
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div>
+        <Header sentences={sentences} intents={intents} />
+        <Loading />
+      </div>
+    );
   }
 
   return (
