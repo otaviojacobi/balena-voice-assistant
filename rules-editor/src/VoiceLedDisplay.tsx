@@ -1,17 +1,59 @@
 import { Box } from '@mui/material';
-import { Connector } from 'mqtt-react-hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import mqtt from 'mqtt';
 
 export default function VoiceLedDisplay() {
-  const [bgcolor, setBgColor] = useState('blue');
+  const [bgcolor, setBgcolor] = useState('white');
+
+  const handleSubscriptions = (client: mqtt.MqttClient): mqtt.MqttClient => {
+    client.on('connect', () => {
+      client.subscribe([
+        'hermes/asr/startListening',
+        'hermes/asr/textCaptured',
+      ]);
+    });
+    client.on('message', (topic: string, message: string) => {
+      const parsedMessage = JSON.parse(message);
+
+      console.log(parsedMessage);
+
+      if (topic === 'hermes/asr/startListening') {
+        setBgcolor('blue');
+      } else if (topic === 'hermes/asr/textCaptured') {
+        if (parsedMessage.text === '') {
+          setBgcolor('red');
+          setTimeout(() => setBgcolor('white'), 2000);
+        } else {
+          setBgcolor('green');
+          setTimeout(() => setBgcolor('white'), 2000);
+        }
+      }
+    });
+
+    client.on('close', () => {
+      setBgcolor('gray');
+    });
+
+    client.on('error', () => {
+      setBgcolor('gray');
+    });
+
+    return client;
+  };
+
+  useEffect(() => {
+    try {
+      handleSubscriptions(mqtt.connect('ws://192.168.0.40:9001'));
+    } catch (e) {
+      console.log('failed to connect to mqtt, some things may not work', e);
+      setBgcolor('gray');
+    }
+  }, []);
 
   return (
-    <Connector
-      brokerUrl={'wss://192.168.40.0:1883'}
-      parserMethod={(msg: any) => msg}
-    >
-      <Box sx={{ ...commonStyles, borderRadius: '50%', bgcolor }} />
-    </Connector>
+    <div>
+      <Box sx={{ ...commonStyles, borderRadius: '50%', bgcolor }}></Box>
+    </div>
   );
 }
 
