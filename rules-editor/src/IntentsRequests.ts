@@ -12,7 +12,6 @@ export async function createIntentFiles(): Promise<void> {
 };
 
 export async function updateIntentsFile(intents: string): Promise<void> {
-  const token = process.env.HASS_ACCESS_TOKEN;
 
   const updateFileBody = new URLSearchParams({
     filename: '/hass-config/intents.yaml',
@@ -23,13 +22,7 @@ export async function updateIntentsFile(intents: string): Promise<void> {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
 
-  await axios.post(
-    '/haas/api/services/homeassistant/restart',
-    {},
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  );
+  await axios.post('/haas/api/services/homeassistant/restart');
 };
 
 export async function  updateIntents(intents: string): Promise<void> {

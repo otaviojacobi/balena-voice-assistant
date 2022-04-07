@@ -34,16 +34,19 @@ export default function VoiceLedDisplay() {
       setBgcolor('gray');
     });
 
-    client.on('error', () => {
+    client.on('error', (e: any) => {
       setBgcolor('gray');
+      console.error('error connecting', e);
     });
 
     return client;
   };
 
   useEffect(() => {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws';
+    const wsLocation = `${protocol}//${window.location.host}/mqtt`;
     try {
-      handleSubscriptions(mqtt.connect('ws://192.168.0.40:9001'));
+      handleSubscriptions(mqtt.connect(wsLocation));
     } catch (e) {
       console.log('failed to connect to mqtt, some things may not work', e);
       setBgcolor('gray');
