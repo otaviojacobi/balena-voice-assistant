@@ -21,8 +21,6 @@ export async function updateIntentsFile(intents: string): Promise<void> {
   await axios.post('/haconfig/api/save', updateFileBody, {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
-
-  await axios.post('/haas/api/services/homeassistant/restart');
 };
 
 export async function  updateIntents(intents: string): Promise<void> {
@@ -36,3 +34,18 @@ export async function  updateIntents(intents: string): Promise<void> {
 
   await updateIntentsFile(intents);
 };
+
+export async function updateConfigFile(config: string): Promise<void> {
+  const updateFileBody = new URLSearchParams({
+    filename: '/hass-config/configuration.yaml',
+    text: config,
+  });
+
+  await axios.post('/haconfig/api/save', updateFileBody, {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+
+}
+export async function restartHaas() : Promise<void> {
+  await axios.post('/haas/api/services/homeassistant/restart');
+}

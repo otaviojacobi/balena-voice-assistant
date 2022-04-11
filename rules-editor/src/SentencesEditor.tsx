@@ -18,6 +18,7 @@ export default function SentencesEditor({
   const updateSentences = useCallback((e) => setSentences(e), [setSentences]);
 
   useEffect(() => {
+    setLoading(true);
     if (monaco) {
       setUpIniLanguage(monaco);
     }

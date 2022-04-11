@@ -9,14 +9,29 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Check, Clear } from '@mui/icons-material';
 import VoiceLedDisplay from './VoiceLedDisplay';
 import { updateSentences } from './SentencesRequests';
-import { updateIntents } from './IntentsRequests';
+import {
+  restartHaas,
+  updateConfigFile,
+  updateIntents,
+} from './IntentsRequests';
+import { Select } from '@mui/material';
+import { MenuItem } from '@mui/material';
 
 interface HeaderProps {
   sentences: string;
   intents: string;
+  config: string;
+  selectedFile: string;
+  setSelectedFile: Function;
 }
 
-export default function Header({ sentences, intents }: HeaderProps) {
+export default function Header({
+  sentences,
+  intents,
+  config,
+  selectedFile,
+  setSelectedFile,
+}: HeaderProps) {
   const [syncStatus, setSyncStatus] = useState('ok');
 
   const sync = async (): Promise<void> => {
@@ -24,6 +39,8 @@ export default function Header({ sentences, intents }: HeaderProps) {
     try {
       await updateSentences(sentences);
       await updateIntents(intents);
+      await updateConfigFile(config);
+      await restartHaas();
       setSyncStatus('ok');
     } catch (e) {
       console.error('Failed to sync with error', e);
@@ -46,6 +63,14 @@ export default function Header({ sentences, intents }: HeaderProps) {
           <div style={{ marginLeft: '1%' }}></div>
           <VoiceLedDisplay />
           <div style={{ marginLeft: '35%' }}></div>
+          <Select
+            value={selectedFile}
+            onChange={(e) => setSelectedFile(e.target.value)}
+          >
+            <MenuItem value='intents'>intents.yaml</MenuItem>
+            <MenuItem value='configuration'>configuration.yaml</MenuItem>
+          </Select>
+
           <Button onClick={sync} color='inherit'>
             REBUILD
           </Button>

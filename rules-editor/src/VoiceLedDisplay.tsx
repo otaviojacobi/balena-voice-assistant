@@ -43,7 +43,7 @@ export default function VoiceLedDisplay() {
   };
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws';
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsLocation = `${protocol}//${window.location.host}/mqtt`;
     try {
       handleSubscriptions(mqtt.connect(wsLocation));

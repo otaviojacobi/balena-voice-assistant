@@ -1,4 +1,4 @@
-# balena-voice-assistant
+# voice-assistant-builder
 
 ### What is this project?
 This application is a fully balena hosted voice assistant integrating with [Home Assistant](https://github.com/balenalabs-incubator/balena-homeassistant). It provides an intuitive UI that allows the end-user to easily connect pre-defined sentences to mapped actions (or [intents](https://www.home-assistant.io/integrations/intent_script/)) in Home Assistant.
