@@ -1,6 +1,6 @@
 FROM rhasspy/rhasspy
 
-RUN mkdir -p /var/cache/apt/amd64/archives/partial
+RUN mkdir -p /var/cache/apt/%%BALENA_ARCH%%/archives/partial
 RUN curl -skL https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh | sh
 
 COPY ./sentences.ini /profiles/en/sentences.ini
