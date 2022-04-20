@@ -22,14 +22,10 @@ function App() {
       const sentences = await axios.get('/rhasspy/api/sentences');
       setSentences(sentences['data']);
 
-      const intents = await axios.get(
-        '/haconfig/api/file?filename=/hass-config/intents.yaml',
-      );
+      const intents = await axios.get('/haconfig/api/file/intents');
       setIntents(intents['data']);
 
-      const configs = await axios.get(
-        '/haconfig/api/file?filename=/hass-config/configuration.yaml',
-      );
+      const configs = await axios.get('/haconfig/api/file/config');
       setConfig(configs['data']);
       setLoading(false);
     };

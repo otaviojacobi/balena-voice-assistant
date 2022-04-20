@@ -25,7 +25,7 @@ export async function updateIntentsFile(intents: string): Promise<void> {
 
 export async function  updateIntents(intents: string): Promise<void> {
   const checkIntents = await axios.get(
-    '/haconfig/api/file?filename=/hass-config/intents.yaml',
+    '/haconfig/api/file/intents',
   );
 
   if (checkIntents['data'] === 'File not found') {

@@ -19,6 +19,10 @@ services:
       - '80:80'
     networks:
       - default
+    labels:
+      io.balena.features.supervisor-api: '1'
+    depends_on:
+      - rules-editor
 
   rules-editor:
     build: ./rules-editor
@@ -29,6 +33,13 @@ services:
       - '3000:3000'
     networks:
       - default
+    labels:
+      io.balena.features.supervisor-api: '1'
+    depends_on:
+      - rhasspy
+      - homeassistant
+      - mqtt
+      - hass-configurator
 
   audio:
     image: bh.cr/balenablocks/audio-amd64
