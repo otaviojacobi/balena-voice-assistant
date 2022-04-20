@@ -9,13 +9,18 @@ If you, as many others, have [privacy concerns](https://www.theguardian.com/tech
 Hardware Required
  - Intel NUC (can be replaced with a RaspberryPi or BalenaFin)
  - A micro SD card
- - Microphone and Speakers (or a old headset)
+ - Microphone and Speakers (or an old headset)
 
 In my case I used an USB Headset which contained microphone and loud enough speakers but this can be replaced by any means you have to input/output audio physically.
 
 ## Deploying the project 
 ### Deploy with Balena
-### Deploy manually
+
+[![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/otaviojacobi/balena-voice-assistant)
+
+
+
+### Deploy manually (advanced)
 
 ## Booting the device for the first time
 

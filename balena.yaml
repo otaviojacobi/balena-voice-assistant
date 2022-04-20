@@ -1,0 +1,17 @@
+name: voiceAssistantBuilder
+type: sw.application
+description: >-
+  Run a Home Assistant server with Rhasspy as your private voice assistant!
+
+assets:
+  repository:
+    type: blob.asset
+    data:
+      url: 'https://github.com/otaviojacobi/balena-voice-assistant'
+
+data:
+  defaultDeviceType: intel-nuc
+  supportedDeviceTypes:
+    - intel-nuc
+
+version: 0.0.1
