@@ -29,6 +29,7 @@ services:
     container_name: rules-editor
     volumes:
       - 'balena-rules-editor-data:/var/lib/rules-editor/'
+    privileged: true
     ports:
       - '3000:3000'
     networks:
@@ -38,7 +39,6 @@ services:
     depends_on:
       - rhasspy
       - homeassistant
-      - mqtt
       - hass-configurator
 
   audio:
@@ -63,9 +63,12 @@ services:
       - 'pulse:/run/pulse'
     environment:
       - PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
+    depends_on:
+      - mqtt
 
   homeassistant:
     build: homeassistant
+    container_name: homeassistant
     ports:
       - '8123:8123'
     privileged: true
@@ -75,6 +78,7 @@ services:
 
   mqtt:
     build: mqtt
+    container_name: mqtt
     ports:
       - 1883:1883
       - 9001:9001
@@ -85,6 +89,7 @@ services:
   hass-configurator:
     image: 'causticlab/hass-configurator-docker:latest'
     restart: always
+    container_name: hass-configurator
     ports:
       - '3218:3218'
     volumes:

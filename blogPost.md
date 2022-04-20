@@ -26,9 +26,10 @@ In my case I used an USB Headset which contained microphone and loud enough spea
 
 Once your deployment is done we have to set up two environment variables to allow Rhasspy and Home Assistant to communicate with each other. To set these variables, follow these steps:
 
-1) In your device Summary tab you will find a page very similar to Image 1 below:
-   Locate the Local IP Address and insert it as a Device Variable called LOCAL_IP_ADDRESS (as per Image 2)
 
+1) In a computer within the same network access <local_ip_address>:8123 (the local IP address can be found on the Balena dashboard UI) and create your Home Assistant account
+   After creating an account, click on your username on the bottom left, scroll down and click on 'CREATE TOKEN' as in Image 1. Give it a name and copy it. Add it as a Device Variable in balena dashboard, with the name "HASS_ACCESS_TOKEN". 
+   At the end you will have something as in Image 2.
 
 | ![image1](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/1.png?raw=true) |
 |:--:|
@@ -38,18 +39,4 @@ Once your deployment is done we have to set up two environment variables to allo
 |:--:|
 |___Image 2___|
 
-___note___: If your device IP changes (e.g. network change) you will need to re-run step 1).
-
-2) In a computer within the same network access <local_ip_address>:8123 and create your Home Assistant account
-   After creating an account, click on your username on the bottom left, scroll down and click on 'CREATE TOKEN' as in Image 3. Give it a name and copy it. Add it as a Device Variable in balena dashboard, with the name "HASS_ACCESS_TOKEN". 
-   At the end you will have something as in Image 4.
-
-| ![image3](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/3.png?raw=true) |
-|:--:|
-|___Image 3___|
-
-| ![image4](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/4.png?raw=true) |
-|:--:|
-|___Image 4___|
-
-3) Wait a few seconds for the containers to restart.
+2) Wait a few seconds for the containers to restart.
