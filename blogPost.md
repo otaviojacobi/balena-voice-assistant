@@ -51,3 +51,5 @@ ___note___: If your device IP changes (e.g. network change) you will need to re-
 | ![image4](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/4.png?raw=true) |
 |:--:|
 |___Image 4___|
+
+3) Wait a few seconds for the containers to restart.
