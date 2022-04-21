@@ -1,6 +1,16 @@
 FROM rhasspy/rhasspy
 
-RUN mkdir -p /var/cache/apt/%%BALENA_ARCH%%/archives/partial
+
+RUN if [ "%%BALENA_ARCH%%" = "armv7hf" ]; then \
+        mkdir -p /var/cache/apt/armv7/archives/partial; \
+    else \ 
+        if [ "%%BALENA_ARCH%%" = "aarch64" ]; then \
+            mkdir -p /var/cache/apt/arm64/archives/partial; \
+        else \ 
+            mkdir -p /var/cache/apt/%%BALENA_ARCH%%/archives/partial; \
+        fi \
+    fi
+
 RUN curl -skL https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh | sh
 
 COPY ./sentences.ini /profiles/en/sentences.ini

@@ -1,3 +1,4 @@
-FROM fabiocicerchia/nginx-lua
+FROM nginx
 
-COPY ./nginx.conf /etc/nginx/nginx.conf 
+COPY ./utils.js /etc/nginx/utils.js
+COPY ./nginx.conf /etc/nginx/nginx.conf
