@@ -7,8 +7,7 @@ If you, as many others, have [privacy concerns](https://www.theguardian.com/tech
 ## Setup
 
 Hardware Required
- - Intel NUC (can be replaced with a RaspberryPi or BalenaFin)
- - A micro SD card
+ - Intel-NUC (recommended) or BalenaFin or Raspberry Pi
  - Microphone and Speakers (or an old headset)
 
 In my case I used an USB Headset which contained microphone and loud enough speakers but this can be replaced by any means you have to input/output audio physically.
@@ -18,7 +17,7 @@ In my case I used an USB Headset which contained microphone and loud enough spea
 
 [![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/otaviojacobi/voice-assistant-builder)
 
-Once your new fleet is created, follow the default instructions to set up your device (using [balenaEtcher](https://www.balena.io/etcher/) to flash the OS image into the device). Once your device is up, you can navigate to the device summary and see the microservices starting up.
+Once your new fleet is created, follow the default instructions to set up your device (using [balenaEtcher](https://www.balena.io/etcher/) to flash the OS image into the device). Once your device is up, you can navigate to the device summary and see the microservices starting up. The whole process of downloading the images might take a few minutes depending on your device type.
 
 ### Deploy manually (advanced)
 
@@ -39,4 +38,6 @@ Once your deployment is done we have to set up two environment variables to allo
 |:--:|
 |___Image 2___|
 
-2) Wait a few seconds for the containers to restart.
+2) Wait for the containers to restart. This can be really fast or really slow (up to two minutes) depending on the device you are using. Worst scenario, wait for the full two minutes.
+
+3) Navigate to <local_ip_address>:80 or to the public device url (if you toggle it on) and have fun!
