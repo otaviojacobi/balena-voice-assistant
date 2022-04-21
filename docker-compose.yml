@@ -42,7 +42,7 @@ services:
       - hass-configurator
 
   audio:
-    image: bh.cr/balenablocks/audio-amd64
+    build: ./audio
     privileged: true
     volumes:
       - 'pulse:/run/pulse'

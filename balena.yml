@@ -7,11 +7,12 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/otaviojacobi/balena-voice-assistant'
+      url: 'https://github.com/otaviojacobi/voice-assistant-builder'
 
 data:
-  defaultDeviceType: intel-nuc
+  defaultDeviceType: fincm3
   supportedDeviceTypes:
     - intel-nuc
+    - fincm3
 
 version: 0.0.1

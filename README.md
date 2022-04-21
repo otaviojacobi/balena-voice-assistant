@@ -33,4 +33,4 @@ Other additional services used to support the above are:
  - [mqtt server](https://mosquitto.org/): A simple mqtt server that allows haas-configurator and home assistant to talk between themselves.
  - [nginx](https://www.nginx.com/): As mentioned before, the only customer facing app that handles all the request forwarding internally.
 
-![voice assistant architecture](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/balena-voice-assistant-architecture.png?raw=true)
+![voice assistant architecture](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/architecture.png?raw=true)

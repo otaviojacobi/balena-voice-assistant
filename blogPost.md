@@ -16,9 +16,9 @@ In my case I used an USB Headset which contained microphone and loud enough spea
 ## Deploying the project 
 ### Deploy with Balena
 
-[![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/otaviojacobi/balena-voice-assistant)
+[![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/otaviojacobi/voice-assistant-builder)
 
-
+Once your new fleet is created, follow the default instructions to set up your device (using [balenaEtcher](https://www.balena.io/etcher/) to flash the OS image into the device). Once your device is up, you can navigate to the device summary and see the microservices starting up.
 
 ### Deploy manually (advanced)
 
@@ -31,11 +31,11 @@ Once your deployment is done we have to set up two environment variables to allo
    After creating an account, click on your username on the bottom left, scroll down and click on 'CREATE TOKEN' as in Image 1. Give it a name and copy it. Add it as a Device Variable in balena dashboard, with the name "HASS_ACCESS_TOKEN". 
    At the end you will have something as in Image 2.
 
-| ![image1](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/1.png?raw=true) |
+| ![image1](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/1.png?raw=true) |
 |:--:|
 |___Image 1___|
 
-| ![image2](https://github.com/otaviojacobi/balena-voice-assistant/blob/main/docs/2.png?raw=true) |
+| ![image2](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/2.png?raw=true) |
 |:--:|
 |___Image 2___|
 
