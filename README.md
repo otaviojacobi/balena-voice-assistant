@@ -4,7 +4,7 @@
 This application is a fully balena hosted voice assistant integrating with [Home Assistant](https://github.com/balenalabs-incubator/balena-homeassistant). It provides an intuitive UI that allows the end-user to easily connect pre-defined sentences to mapped actions (or [intents](https://www.home-assistant.io/integrations/intent_script/)) in Home Assistant.
 
 ### Why this project and what does it require?
-Previous projects had integrated Alexa or any other voice assistant with Home Assistant, however if you have privacy concerns or simply do not want to pay for a voice assistant, this projects uses an [Intel Nuc](https://www.intel.com.br/content/www/br/pt/products/details/nuc.html) (that could easily be switched to a [Rasp Pi](https://www.raspberrypi.org/)) running the open-source and fully offline [Rhasspy](https://rhasspy.readthedocs.io/en/latest/) server. The only additional hardware required is some way to input/output audio (such as an headset).
+Previous projects had integrated Alexa or any other voice assistant with Home Assistant, however if you have privacy concerns or simply do not want to pay for a voice assistant, this projects uses an [Intel Nuc](https://www.intel.com.br/content/www/br/pt/products/details/nuc.html) (that can be swtiched to a [Rasp Pi](https://www.raspberrypi.org/) or [balenaFin](https://www.balena.io/fin/)) running the open-source and fully offline [Rhasspy](https://rhasspy.readthedocs.io/en/latest/) server. The only additional hardware required is some way to input/output audio (such as an headset).
 
 # Building and Running locally
 This project is built with docker and docker compose. To build it, run:

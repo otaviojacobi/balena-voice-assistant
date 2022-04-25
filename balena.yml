@@ -10,7 +10,7 @@ assets:
       url: 'https://github.com/otaviojacobi/voice-assistant-builder'
 
 data:
-  defaultDeviceType: fincm3
+  defaultDeviceType: intel-nuc
   supportedDeviceTypes:
     - intel-nuc
     - fincm3
