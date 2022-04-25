@@ -156,3 +156,8 @@ The underlying Home Assistant server works normally, therefore to do an integrat
 
 ### Changing Rhasspy configs
 Similar to Home Assistant, you can modify Rhasspy configs directly at http://\<local_ip_address>:12101.
+
+
+## Last Considerations
+
+This project was tested mainly using an USB i/o, and using the audio jack i/o might require some different configuration in balena audio block and/or Rhasspy. Also, for most of the development I used an intel NUC and although it was tested and I ensured it was working on a Fin Board too, it was much slower. Specially retraining after defining new sentences (e.g. pressing the build button) would easily take more than 30s while in the intel NUC it was very fast (< 1s).
