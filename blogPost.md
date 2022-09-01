@@ -1,14 +1,14 @@
 ## Voice Assistant Builder
 
-Voice Assistants represent an entire different way on how we (humans) can interact with machines. In the past years, [Google Assistant](https://assistant.google.com/), [Siri](https://www.apple.com/siri/) and [Alexa](https://www.alexa.com/) revolutionized the entire field, however, all these devices work "on-line" meaning that they send your voice command to a server, where this data can possibly be stored for further improvements on their models. 
+Voice Assistants represent an entirely different way of how we can interact with machines. In the past few years, [Google Assistant](https://assistant.google.com/), [Siri](https://www.apple.com/siri/) and [Alexa](https://www.alexa.com/) have revolutionized the entire field, however, all these devices work "online" meaning that they send your voice commands to a server in the cloud, where this data is stored for further improvements on their voice recognition models.
 
-If you, as many others, have [privacy concerns](https://www.theguardian.com/technology/2019/oct/09/alexa-are-you-invading-my-privacy-the-dark-side-of-our-voice-assistants) about what your audio file could be possibly being used for, this projects features a full "off-line" model (all the language understanding and parsing is done in your Intel NUC or a Raspberry Pi) called [Rhasspy](https://rhasspy.readthedocs.io/en/latest/), an easy UI to build the sentences you want to be understandable and integrate with [Home Assistant](https://www.home-assistant.io/).
+If you, like many others, have [privacy concerns](https://www.theguardian.com/technology/2019/oct/09/alexa-are-you-invading-my-privacy-the-dark-side-of-our-voice-assistants) about what your audio file could be used for, this projects features a full "off-line" model, [Rhasspy](https://rhasspy.readthedocs.io/en/latest/), where all the language understanding and parsing is done on your Intel NUC or Raspberry Pi. It has a simple  UI to build the sentences you want to be understandable and the project integrates with  [Home Assistant](https://www.home-assistant.io/).
 
-This post will present how the project was built in the first section, if you want to start right away, [go to the running instructions]().
+This post will present how the project was built in the first section. If you want to start right away, head to the [go to the running instructions](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/blogPost.md#setup).
 
 ### This project is part of the balenaLabs Residency Program
 
-My prototype is part of the balenaLabs residency program, where balenistas take on a physical computing project to learn more about balena and various hobbyist or industrial use cases. You can check out all kinds of build logs and notes on [our Forums](https://forums.balena.io/c/show-and-tell/92).
+My prototype is a part of the balenaLabs residency program, where balenistas take on a physical computing project to learn more about balena and various hobbyist or industrial use cases. You can check out all kinds of build logs and notes on [our Forums](https://forums.balena.io/c/show-and-tell/92).
 
 Also, this program isn’t just for balena’s teammates - any community member can join in on the fun. Share your project on the Forums to let us know what you’re working on. We’re here to help!
 
@@ -16,7 +16,8 @@ Also, this program isn’t just for balena’s teammates - any community member 
 ## Concept
 
 ### Features
-A voice assistant builder should allow an user to easily define the sentences it wants the voice assistant to listen for and the actions triggered from it. To do it our project mainly connects two other products: [Rhasspy](https://rhasspy.readthedocs.io/en/latest/) and [Home Assistant](https://www.home-assistant.io/). Our UI is very simple and intuictive, on the left side one can define the sentences the voice assistant will understand using a [Rhasspy sentences file](https://rhasspy.readthedocs.io/en/latest/training/#sentencesini) and on the right side you can control both [configurations.yaml](https://www.home-assistant.io/docs/configuration/) and [intents.yaml](https://www.home-assistant.io/integrations/intent_script/) files in order to define the sentence intent action.
+The voice assistant builder should allow users to easily define the sentences they want the voice assistant to listen for and the actions triggered. To do this, our project connects two other products: [Rhasspy](https://rhasspy.readthedocs.io/en/latest/) and [Home Assistant](https://www.home-assistant.io/). Our UI is very simple and intuitive; On the left side, one can define the sentences the voice assistant will understand using a [Rhasspy sentences file](https://rhasspy.readthedocs.io/en/latest/training/#sentencesini), and on the right side, one can control both [configurations.yaml](https://www.home-assistant.io/docs/configuration/) and [intents.yaml](https://www.home-assistant.io/integrations/intent_script/) files in order to define the intended action of a sentence.
+
 
 | ![ui_example](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/ui_example.png?raw=true) |
 |:--:|
@@ -24,32 +25,34 @@ A voice assistant builder should allow an user to easily define the sentences it
 
 ### Advanced Features
 
-We also expose the MQTT messages used by Home Assistant and Rhasspy over a WebSocket (http://\<local_ip_address>/mqtt or https://\<device_url>/mqtt for devices with public device url enabled). Full documentation of events emmited and listened by Rhasspy can be found [here](https://rhasspy.readthedocs.io/en/latest/reference/#mqtt-api) and for Home Assistant [here](https://www.home-assistant.io/integrations/mqtt/). This integration can be usefull to capture custom moments of the voice assistant usage, for example, in our UI there is a round display on the top left, which is usually white (listening for wake word), gets blue while it is capturing audio and green or red if understood or not a sentence.
+We also expose the MQTT messages used by Home Assistant and Rhasspy over a WebSocket `http://<local_ip_address>/mqtt` or `https://<device_url>/mqtt` for devices with [public device URLs](https://www.balena.io/docs/learn/develop/runtime/#public-device-urls) enabled). Full documentation of events emitted and listened to can be found [here](https://rhasspy.readthedocs.io/en/latest/reference/#mqtt-api) for Rhasspy and [here](https://www.home-assistant.io/integrations/mqtt/) for Home Assistant. This integration can be useful to capture specific moments of the voice assistant’s usage. For example, in our UI there is a round display on the top left which is usually white (listening for Rhasspy’s “wake word”). It turns blue while capturing audio and green or red depending on whether a sentence was understood or not.
 
-On top of all that, the services are also exposed in the local network (exclusively) and can be modified accordingly. For example, if one wants to change the default wake word from Jarvis to Alexa, you can navigate to http://\<local_ip_address>:12101 and edit the "Wake Word" mechanism of Rhasspy directly.
+On top of that, the services are also exposed in the local network and can be modified accordingly. For example, if one wants to change the default “wake word” from Jarvis to Alexa, you can navigate to `http://<local_ip_address>:12101` and edit Rhasspy’s "wake word" mechanism directly.
+
 
 ### Architecture
-This projects involves different moving parts and quite a few different local http servers talking between themselves, therefore, using a [reverse-proxy](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/#:~:text=A%20reverse%20proxy%20is%20a,security%2C%20performance%2C%20and%20reliability.), helps to facilitate out-of-container communication. We use [nginx](https://www.nginx.com/) to do so.
+
+This project involves different moving parts and quite a few different local http servers talking among themselves, therefore, using a [reverse proxy](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/#:~:text=A%20reverse%20proxy%20is%20a,security%2C%20performance%2C%20and%20reliability.) helps to facilitate out-of-container communication. We use [nginx](https://www.nginx.com/) to do so.
 
 The main services/containers involved are:
  - [balena audio](https://github.com/balenablocks/audio): A block for out-of-the-box audio handling with [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server.
- - [rhasspy](https://rhasspy.readthedocs.io/en/latest/): The voice assistant engine that provide many usefull services.
- - [home assistant](https://www.home-assistant.io/): an open source home automation tool that connect multiple devices.
- - rules editor: The UI developed that allows the customer to easily declare new sentences and directly connect with Home Assistant intents.
+ - [rhasspy](https://rhasspy.readthedocs.io/en/latest/): The voice assistant engine that provides many useful services.
+ - [home assistant](https://www.home-assistant.io/): An open source home automation tool that connects multiple devices.
+ - rules editor: The UI that allows users to easily declare new sentences and directly connect with Home Assistant intents.
 
-Other additional services used to support the above are:
- - [haas-configurator](https://hub.docker.com/r/causticlab/hass-configurator-docker): Easily change configuration files and more in the Home Assistant container
- - [mqtt server](https://mosquitto.org/): A simple mqtt server that allows haas-configurator and home assistant to talk between themselves.
- - [nginx](https://www.nginx.com/): As mentioned before, the only customer facing app that handles all the request forwarding internally.
+Additional services used to support the above are:
+ - [haas-configurator](https://hub.docker.com/r/causticlab/hass-configurator-docker): Easily change configuration files and more in the Home Assistant container.
+ - [mqtt server](https://mosquitto.org/): A simple MQTT server that allows haas-configurator and home assistant to talk between themselves.
+ - [nginx](https://www.nginx.com/): As mentioned before, the only user-facing app that handles all the request forwarding internally.
 
 ![voice assistant architecture](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/architecture.png?raw=true)
 ## Setup
 
 Hardware Required
- - Intel-NUC (recommended) or BalenaFin or Raspberry Pi
- - USB Microphone and Speakers (or an old headset)
+ - Intel-NUC (recommended), BalenaFin, or Raspberry Pi
+ - USB Microphone and Speakers (or any headset)
 
-In my case I used an USB Headset which contained microphone and loud enough speakers but this can be replaced by any means you have to input/output audio physically.
+In my case I used a USB Headset which contained a microphone and loud enough speakers. This can be replaced by any hardware you have with physical audio I/O.
 
 ## Deploying the project 
 ### Deploy with Balena
@@ -63,24 +66,22 @@ If you want to change anything in the code or do follow up development, the best
 
 ## Booting the device for the first time
 
-Once your deployment is done we have to set up two environment variables to allow Rhasspy and Home Assistant to communicate with each other. To set these variables, follow these steps:
+Once your deployment is done, you should set up two environment variables to allow Rhasspy and Home Assistant to communicate with each other. To set these variables, follow these steps:
 
 
-1) In a computer within the same network access <local_ip_address>:8123 (the local IP address can be found on the Balena dashboard UI) and create your Home Assistant account
-   After creating an account, click on your username on the bottom left, scroll down and click on 'CREATE TOKEN' as in Image 1. Give it a name and copy it. Add it as a Device Variable in balena dashboard, with the name "HASS_ACCESS_TOKEN". 
-   At the end you will have something as in Image 2.
+1) On a computer within the same network, access `<local_ip_address>:8123` and create your Home Assistant account. The local IP address can be found on the device summary tab of the Balena dashboard. After creating the account, click on your username on the bottom left, scroll down and click on 'CREATE TOKEN' as in the first image below. Give it a name and copy it. Add it as a Device Variable on the balena dashboard, with the name "HASS_ACCESS_TOKEN". At the end you will have something as in the second image below.
 
 | ![image1](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/1.png?raw=true) |
 |:--:|
-|___Image 1___|
+|___Setting up your HASS token___|
 
 | ![image2](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/docs/2.png?raw=true) |
 |:--:|
-|___Image 2___|
+|___Final setup example___|
 
-2) Wait for the containers to restart. This can be really fast or really slow (up to two minutes) depending on the device you are using. Worst scenario, wait for the full two minutes.
+2) Wait for the containers to restart. This startup process can vary in speed depending on the device you are using. You may have to wait for up to two minutes.
 
-3) Navigate to <local_ip_address>:80 or to the public device url (if you toggle it on) and select the "configuration.yaml" file instead of the "intentions.yaml" file. Copy and paste the content bellow and click the "rebuild" button to ensure everything is working.
+3) Navigate to `<local_ip_address>:80` or to the public device url if toggled on and select the "configuration.yaml" file. Copy and paste the content below and click the "rebuild" button to ensure everything is working.
 
 ```yaml
 # configuration.yaml
@@ -98,10 +99,10 @@ intent_script: !include intents.yaml
 4) Have fun!
 
 ## Using the Voice Assistant Builder
-As mentioned previously, the ultimate goal of this project is to reduce friction for people creating their own voice assistant. We do that by providing an easy to use User Interface that connects many pieces (Rhasspy, Home Assistant and others). These services are also accessible independently on your local network (for more see [Advanced Usage]()). This section will focus on what can be done directly in the UI.
+As mentioned previously, the ultimate goal of this project is to reduce friction for people creating their own voice assistant. We do that by providing an easy to use User Interface that connects many pieces (Rhasspy, Home Assistant and others). These services are also accessible independently on your local network (for more see [Advanced Usage](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/blogPost.md#advanced-usage)). This section will focus on what can be done directly in the UI.
 
 ### Simple Q&A rule
-The first and more basic feature one can execute with our Voice Assistant Builder is the have a fixed audio input mapped to an audio output. You can give it a try with the following examples:
+A basic first feature you can execute with the Voice Assistant Builder is having a fixed audio input mapped to an audio output. Try it out with the following example:
 
 ```ini
 [QARule]
@@ -118,19 +119,17 @@ QARule:
 ```
 
 ### Custom HTTP request
-Having integrations with Home Assistant is a good feature, however, one might want to be able to trigger more generic calls. One way to do it is to have [Home Assistant to do a HTTP request for you](https://www.home-assistant.io/integrations/rest_command/) as the example below:
+Having integrations with Home Assistant is a good feature, but you might want to trigger more generic calls. One way to do it is to have [Home Assistant to do a HTTP request for you](https://www.home-assistant.io/integrations/rest_command/) as in the example below:
 
 ```ini
-[MyRule]
-do request
-```
-
-```yaml
+[RenewLibraryLoans]
+please renew my library loans
+ 
 # configurations.yaml
 ...
 rest_command:
-  my_custom_request:
-    url: "http://example.com"
+  http_request_to_renew_loans:
+    url: "http://library.com/renew"
     method: post
 ...
 ```
@@ -138,26 +137,26 @@ rest_command:
 
 ```yaml
 # intents.yaml
-MyRule:
+RenewLibraryLoans:
   action:
-    service: rest_command.my_custom_request
+    service: rest_command.http_request_to_renew_loans
     data:
-      field: "example"
-
+      book: "my awesome book"
+ 
   speech:
-    text: request done
+    text: your book was renewed
 ...
 ```
 
 ## Advanced Usage
 
 ### Custom Integration (e.g. Spotify)
-The underlying Home Assistant server works normally, therefore to do an integration one may use regular Home Assistant tutorials. For example, to connect spotify, just follow [Home Assistant with Spotify](https://www.home-assistant.io/integrations/spotify/) guide. If the application requires, you can access the Home Assistant server at http://\<local_ip_address>:8123.
+The underlying Home Assistant server works normally, so you may use regular Home Assistant tutorials to set up an integration. For example, to connect with Spotify, just follow the [Home Assistant with Spotify](https://www.home-assistant.io/integrations/spotify/) guide. If the application requires, you can access the Home Assistant server at `http://<local_ip_address>:8123`.
 
 ### Changing Rhasspy configs
-Similar to Home Assistant, you can modify Rhasspy configs directly at http://\<local_ip_address>:12101.
+Similar to Home Assistant, you can modify Rhasspy configs directly at `http://<local_ip_address>:12101`.
 
 
 ## Last Considerations
 
-This project was tested mainly using an USB i/o, and using the audio jack i/o might require some different configuration in balena audio block and/or Rhasspy. Also, for most of the development I used an intel NUC and although it was tested and I ensured it was working on a Fin Board too, it was much slower. Specially retraining after defining new sentences (e.g. pressing the build button) would easily take more than 30s while in the intel NUC it was very fast (< 1s).
+This project was tested mainly using a USB audio device for I/O, so using the audio jack I/O might require different configurations in the balena audio block and/or Rhasspy. Also, I used an Intel NUC for most of the development, and while I ensured functionality with the balenaFin, it was much slower. Specifically, when retraining after defining new sentences, the balenaFin would take more than 30s, compared to the <1s on the Intel NUC.
