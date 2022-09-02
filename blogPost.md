@@ -98,6 +98,8 @@ intent_script: !include intents.yaml
 
 4) Have fun!
 
+_Note: the engine used for TTS (text-to-speech) when using Home Assistant is google_translate which might send some data to google servers (which we didn’t want!). The Rhasspy model is still fully offline, but currently, for Home Assistant I did not find other tts platforms with an easy setup._
+
 ## Using the Voice Assistant Builder
 As mentioned previously, the ultimate goal of this project is to reduce friction for people creating their own voice assistant. We do that by providing an easy to use User Interface that connects many pieces (Rhasspy, Home Assistant and others). These services are also accessible independently on your local network (for more see [Advanced Usage](https://github.com/otaviojacobi/voice-assistant-builder/blob/main/blogPost.md#advanced-usage)). This section will focus on what can be done directly in the UI.
 
