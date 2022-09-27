@@ -5,6 +5,7 @@ volumes:
   mosquitto:
   balena-rules-editor-data:
   pulse:
+  syncthingconfig:
 
 networks:
   default:
