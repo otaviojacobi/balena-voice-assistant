@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 volumes:
   config:
@@ -16,11 +16,11 @@ services:
     build: ./nginx
     container_name: nginx
     ports:
-      - '80:80'
+      - "80:80"
     networks:
       - default
     labels:
-      io.balena.features.supervisor-api: '1'
+      io.balena.features.supervisor-api: "1"
     depends_on:
       - rules-editor
 
@@ -28,14 +28,14 @@ services:
     build: ./rules-editor
     container_name: rules-editor
     volumes:
-      - 'balena-rules-editor-data:/var/lib/rules-editor/'
+      - "balena-rules-editor-data:/var/lib/rules-editor/"
     privileged: true
     ports:
-      - '3000:3000'
+      - "3000:3000"
     networks:
       - default
     labels:
-      io.balena.features.supervisor-api: '1'
+      io.balena.features.supervisor-api: "1"
     depends_on:
       - rhasspy
       - homeassistant
@@ -45,7 +45,7 @@ services:
     build: ./audio
     privileged: true
     volumes:
-      - 'pulse:/run/pulse'
+      - "pulse:/run/pulse"
     environment:
       - AUDIO_LOG_LEVEL=DEBUG
 
@@ -53,14 +53,14 @@ services:
     build: ./rhasspy
     container_name: rhasspy
     ports:
-      - '12101:12101'
+      - "12101:12101"
     expose:
-      - '12101'
+      - "12101"
     command: --profile en --user-profiles /profiles
     networks:
       - default
     volumes:
-      - 'pulse:/run/pulse'
+      - "pulse:/run/pulse"
     environment:
       - PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
     depends_on:
@@ -70,10 +70,10 @@ services:
     build: homeassistant
     container_name: homeassistant
     ports:
-      - '8123:8123'
+      - "8123:8123"
     privileged: true
     volumes:
-      - 'config:/config'
+      - "config:/config"
     restart: always
 
   mqtt:
@@ -87,12 +87,24 @@ services:
       - mosquitto:/mosquitto/data
 
   hass-configurator:
-    image: 'causticlab/hass-configurator-docker:latest'
+    image: "causticlab/hass-configurator-docker:latest"
     restart: always
     container_name: hass-configurator
     ports:
-      - '3218:3218'
+      - "3218:3218"
     volumes:
-      - 'config:/hass-config'
+      - "config:/hass-config"
     environment:
       - HC_BASEPATH=/hass-config
+
+  syncthing:
+    image: linuxserver/syncthing
+    container_name: syncthing
+    environment:
+      - UMASK_SET=<022>
+    volumes:
+      - syncthingconfig:/config
+      - config:/home-assistant-config
+      - mosquitto:/mosquitto
+      - balena-rules-editor-data:/balena-rules-editor-data
+      - pulse:/pulse
