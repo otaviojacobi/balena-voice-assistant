@@ -109,3 +109,8 @@ services:
       - mosquitto:/mosquitto
       - balena-rules-editor-data:/balena-rules-editor-data
       - pulse:/pulse
+    ports:
+      - 8384:8384
+      - 22000:22000
+      - 21027:21027/udp
+    restart: unless-stopped
