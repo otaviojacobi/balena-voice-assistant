@@ -11,7 +11,6 @@ get_latest_server() {
   printf "%s\n" "Downloading $MC_VERSION build $LATEST_BUILD..."
 
   echo "$SERVER_JAR_SHA256 paper.jar" > papersha256.txt
-  mv paper.jar paper.jar.old
   wget -O paper.jar -T 60 "$SERVER_JAR_URL"
 }
 

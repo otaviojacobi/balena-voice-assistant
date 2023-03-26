@@ -104,6 +104,8 @@ services:
     image: linuxserver/syncthing
     container_name: syncthing
     environment:
+      - PUID=1000 # for UserID
+      - PGID=1000 # for GroupID
       - UMASK_SET=<022>
     volumes:
       - syncthingconfig:/config
@@ -111,6 +113,8 @@ services:
       - mosquitto:/mosquitto
       - balena-rules-editor-data:/balena-rules-editor-data
       - pulse:/pulse
+      - serverfiles:/minecraft-serverfiles
+      - servercache:/servercache
     ports:
       - 8384:8384
       - 22000:22000
